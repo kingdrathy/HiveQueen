@@ -4,12 +4,15 @@ import (
 	"HiveQueen/loginit"
 	"github.com/op/go-logging"
 	"bufio"
+	"HiveQueen/shared"
 	//"fmt"
 	//"io"
 	//"io/ioutil"
 	"os"
-	"HiveQueen/chunkscanner"
+	//"HiveQueen/chunkscanner"
 )
+
+
 
 func check(e error) {
 	if e != nil{
@@ -24,6 +27,11 @@ func StreamFileChunks(scanWidth int, incrementCount int, filePath string) {
 	var log = logging.MustGetLogger("console")
 	log.Info("Logger initialized")
 
+	//Set the slice that will hold the output of the scan
+	//ScanResultOffset := []int{}
+	//ScanResultText := []string{}
+	ScanResults := make([]shared.ResultList,0)
+	
 	//set the scan width
 	//This will be the number of bytes the slice will have in memory
 	//at one time. Represents the size of the scan window.
@@ -75,12 +83,16 @@ func StreamFileChunks(scanWidth int, incrementCount int, filePath string) {
 		//log.Debug("InitLoad temp contents: ",string(temp))
 		scanSlice[i] = temp
 		//log.Debug("InitLoad scanSlice contents: ",string(scanSlice[i]))
-	}
+	}	
 	log.Debug("Initial scan slice contents: ",string(scanSlice))
 
 	//begin the chunk streaming process
 	//len(dat)
 	bytesProcessed := scanWidth
+	
+	ScanResults = ScanChunk(string(scanSlice), 0, ScanResults)//) append(ScanResults,
+	
+	
 	for bytesProcessed < fileSize {
 //		log.Debug("Shifted scan slice contents: ",string(scanSlice))
 		//Check to see if we are about to  increment more bytes 
@@ -98,14 +110,17 @@ func StreamFileChunks(scanWidth int, incrementCount int, filePath string) {
 			//attach the new byte to the slice
 			scanSlice = append(scanSlice, temp)
 //			log.Debugf("z state: %d",z)
-			//Scan the chunk for matching criteria
-			chunkscanner.ScanChunk(string(scanSlice))
+
 		}
+		//Scan the chunk for matching criteria
+		ScanResults = ScanChunk(string(scanSlice), bytesProcessed, ScanResults)//) append(ScanResults,
 		//increment the i counter by the number of bytes moved
 		bytesProcessed = bytesProcessed + incrementCount
 		//log.Debugf("Bytes read: %d. Increment: %d. New scan slice snapshot: %s",bytesProcessed,incrementCount,string(scanSlice))
 	}
-
+	log.Info(ScanResults)
 	log.Debugf("Bytes processed: %d. Last snapshot of the slice: %s",bytesProcessed,string(scanSlice))
 
 }
+
+
