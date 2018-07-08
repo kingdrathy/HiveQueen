@@ -2,7 +2,7 @@ package filechunkstreamer
 
 import(
 	//"fmt"
-	"HiveQueen/loginit"
+	//"HiveQueen/loginit"
 	"regexp"
 	"github.com/op/go-logging"
 	"HiveQueen/shared"
@@ -11,7 +11,7 @@ import(
 
 func ScanChunk(testString string, ByteIndex int, ScanResults []shared.ResultList)[]shared.ResultList{
 	//get the logger going
-	loginit.InitializeConsoleLogger()
+	shared.InitializeConsoleLogger()
 	var log = logging.MustGetLogger("console")
 	log.Debug("Program started. Logger initialized")
 
@@ -67,7 +67,7 @@ func ScanChunk(testString string, ByteIndex int, ScanResults []shared.ResultList
 func CheckIfSliceContains(ScanResults []shared.ResultList, Offset int) bool{
 
 	//Initialize logger
-	//loginit.InitializeConsoleLogger()
+	//shared.InitializeConsoleLogger()
 	//var log = logging.MustGetLogger("console")
 	
 	for q := range ScanResults {

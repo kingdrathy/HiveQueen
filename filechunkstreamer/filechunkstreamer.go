@@ -1,7 +1,7 @@
 package filechunkstreamer
 
 import (
-	"HiveQueen/loginit"
+	//"HiveQueen/loginit"
 	"github.com/op/go-logging"
 	"bufio"
 	"HiveQueen/shared"
@@ -23,7 +23,7 @@ func check(e error) {
 func StreamFileChunks(scanWidth int, incrementCount int, filePath string) {
 
 	//get the logging engine going
-	loginit.InitializeConsoleLogger()
+	shared.InitializeConsoleLogger()
 	var log = logging.MustGetLogger("console")
 	log.Info("Logger initialized")
 
